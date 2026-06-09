@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "dev:1": "tsx watch src/1.ts",
-    "dev:"
+    "dev:2": "tsx watch src/2.ts",
     "build": "tsc",
     "start": "node dist/index.js"
   },
