@@ -8,6 +8,7 @@ import koaStatic from 'koa-static';
 
 import index from './routes/index';
 import users from './routes/users';
+import posts from './routes/post';
 
 const app = new Koa();
 
@@ -39,6 +40,8 @@ app.use(index.routes());
 app.use(index.allowedMethods());
 app.use(users.routes());
 app.use(users.allowedMethods());
+app.use(posts.routes());
+app.use(posts.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {

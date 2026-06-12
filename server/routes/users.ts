@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { Context, Next } from 'koa';
+import { Next } from 'koa';
 
 const router = new Router();
 
@@ -23,9 +23,9 @@ router.get('/:id', async (ctx, next: Next) => {
   }
 });
 router.post('/create', async (ctx, next: Next) => {
-  const { id = '', name = '' } = ctx.request.body as { id: number, name: string }
+  const { age = '', name = '' } = ctx.request.body as { age: number, name: string }
   ctx.body = {
-    id,
+    age,
     name,
     message: '创建成功'
   }
