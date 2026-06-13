@@ -35,7 +35,16 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 });
 
-// routes
+// routes 
+app.use(async (ctx, next) => {
+  await next()
+  const data = ctx.body;
+  ctx.body = {
+    code: 200,
+    message: 'success',
+    data: data
+  }
+})
 app.use(index.routes());
 app.use(index.allowedMethods());
 app.use(users.routes());
