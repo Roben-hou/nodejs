@@ -1,12 +1,12 @@
 import { Next } from 'koa'
 import { RouterContext } from 'koa-router'
+import db from '../db'
 
 export const PostController = {
-   index: async (ctx: RouterContext, next: Next) => {
-       const category = ctx.query.category
-       ctx.body = {
-        category,
-       }
+   getList: async (ctx: RouterContext, next: Next) => {
+        const category = ctx.query.category
+        const posts = await db('posts').select('*')
+       ctx.body = posts      
     } ,
     getDetail:async (ctx: RouterContext, next: Next)=>{
         const id = ctx.params.id

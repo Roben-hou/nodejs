@@ -5,7 +5,7 @@ const router = new Router();
 
 router.prefix('/posts');
 
-router.get('/', PostController.index);
+router.get('/', PostController.getList);
 router.get('/:id', PostController.getDetail)
 router.post('/create', PostController.create)
   
