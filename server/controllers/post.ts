@@ -10,17 +10,18 @@ export const PostController = {
     } ,
     getDetail:async (ctx: RouterContext, next: Next)=>{
         const id = ctx.params.id
-        ctx.body={
-            id,
-        }
+        const posts = await db('posts').select('*').where('id',id).first()
+        ctx.body=posts
     },
     create: async (ctx: RouterContext, next: Next) => {
-        const { title, context, category } = ctx.request.body as { title: string, context: string, category: string }
-        ctx.body = {
-            title,
-            context,
-            category,
-        }
+        const { title, content, category } = ctx.request.body as { title: string, content: string, category: string }
+        const posts = await db('posts').insert({title,content,category})
+        ctx.body={message:'插入成功'}
+    },
+    delete: async(ctx: RouterContext, next: Next)=>{
+        const id = ctx.params.id
+        const posts = await db('posts').where('id',id).delete()
+        ctx.body={message:'删除成功'}
     }
 }
 

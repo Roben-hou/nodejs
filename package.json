@@ -18,6 +18,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/knex": "^0.15.2",
     "@types/koa": "^3.0.3",
     "@types/node": "^20.11.0",
     "tsx": "^4.7.1",
@@ -25,6 +26,8 @@
   },
   "dependencies": {
     "@koa/router": "^15.6.0",
-    "koa": "^3.2.1"
+    "knex": "^3.2.10",
+    "koa": "^3.2.1",
+    "mysql2": "^3.22.5"
   }
 }
