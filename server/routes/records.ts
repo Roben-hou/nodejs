@@ -7,4 +7,6 @@ router.prefix('/records');
 
 router.get('/', RecordController.getList);
 router.post('/create', RecordController.create)
+router.get('/stats', RecordController.getStats)
 router.delete('/:id', RecordController.delete)
+export default router;

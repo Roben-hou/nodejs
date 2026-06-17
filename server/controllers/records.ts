@@ -9,6 +9,7 @@ export const RecordController = {
     },
     create: async (ctx: RouterContext, next: Next) => {
         const { title, amount, type, category } = ctx.request.body as { title: string, amount: number, type: 'income' | 'expense', category: string }
+         console.log({ title, amount, type, category })
         const records = await db('records').insert({ title, amount, type, category })
         ctx.body = { message: '插入成功' }
     },
@@ -16,5 +17,13 @@ export const RecordController = {
         const id = ctx.params.id
         const records = await db('records').where('id', id).delete()
         ctx.body = { message: '删除成功' }
+    },
+    getStats: async (ctx: RouterContext, next: Next) => {
+        const income = await db('records').where({ type: 'income' }).sum('amount as total').first()
+        const expense = await db('records').where({ type: 'expense' }).sum('amount as total').first()
+        ctx.body = {
+            income: income?.total || 0,
+            expense: expense?.total || 0
+        }
     }
 }
