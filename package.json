@@ -18,6 +18,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/knex": "^0.15.2",
     "@types/koa": "^3.0.3",
     "@types/node": "^20.11.0",
@@ -26,6 +28,8 @@
   },
   "dependencies": {
     "@koa/router": "^15.6.0",
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.3",
     "knex": "^3.2.10",
     "koa": "^3.2.1",
     "mysql2": "^3.22.5"
