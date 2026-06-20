@@ -10,6 +10,7 @@ import index from './routes/index';
 import users from './routes/users';
 import posts from './routes/post';
 import records from './routes/records';
+import auth from './routes/auth';
 
 const app = new Koa();
 
@@ -54,6 +55,8 @@ app.use(posts.routes());
 app.use(posts.allowedMethods());
 app.use(records.routes());
 app.use(records.allowedMethods());
+app.use(auth.routes());
+app.use(auth.allowedMethods());
 
 // error-handling
 app.on('error', (err, ctx) => {
