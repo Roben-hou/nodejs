@@ -19,7 +19,7 @@ export const AuthController = {
     },
     login: async (ctx: RouterContext) => {
         const { username, password }=ctx.request.body as { username: string, password: string }
-        const user = await db('users').where({ username }).first()
+        const user = await db('users').where({ username }).first() 
         if (!user) {
             ctx.status = 401
             ctx.body = { message: '用户名或密码错误' }
@@ -31,7 +31,7 @@ export const AuthController = {
             ctx.body = { message: '用户名或密码错误' }
             return
         }
-        const token = jwt.sign({ id: user.id ,username:user.username}, 'secret', { expiresIn: '1h' }
+        const token = jwt.sign({ id: user.id ,username:user.username}, 'secret', { expiresIn: '720h' }
         )    
         ctx.body = { message: '登录成功', token }
     }

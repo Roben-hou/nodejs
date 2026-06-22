@@ -3,9 +3,7 @@ import { Next } from 'koa'
 import jwt from 'jsonwebtoken'
 
 export const authMiddleware = async (ctx: RouterContext, next: Next) => {
-    console.log('收到的header:', ctx.headers.authorization)
     const token = ctx.headers.authorization?.split(' ')[1]
-
   if (!token) {
     ctx.status = 401
     ctx.body = { message: '未登录' }
