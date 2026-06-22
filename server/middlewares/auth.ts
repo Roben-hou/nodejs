@@ -10,7 +10,7 @@ export const authMiddleware = async (ctx: RouterContext, next: Next) => {
     return
   }
   try {
-    const decoded = jwt.verify(token, 'secret')
+    const decoded = jwt.verify(token, 'process.env.JWT_SECRET')
     ctx.state.user = decoded
     await next()
   } catch (err) {

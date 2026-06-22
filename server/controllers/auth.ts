@@ -31,7 +31,7 @@ export const AuthController = {
             ctx.body = { message: '用户名或密码错误' }
             return
         }
-        const token = jwt.sign({ id: user.id ,username:user.username}, 'secret', { expiresIn: '720h' }
+        const token = jwt.sign({ id: user.id ,username:user.username}, 'process.env.JWT_SECRET', { expiresIn: '720h' }
         )    
         ctx.body = { message: '登录成功', token }
     }
