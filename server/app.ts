@@ -1,3 +1,4 @@
+import "dotenv/config"
 import Koa from 'koa';
 import views from 'koa-views';
 import json from 'koa-json';
@@ -5,7 +6,6 @@ import onerror from 'koa-onerror';
 import bodyparser from 'koa-bodyparser';
 import logger from 'koa-logger';
 import koaStatic from 'koa-static';
-import "dotenv/config"
 
 import index from './routes/index';
 import users from './routes/users';
