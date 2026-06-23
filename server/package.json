@@ -2,14 +2,15 @@
   "name": "my-new-koa-project",
   "version": "0.1.0",
   "private": true,
-"scripts": {
-"start": "node --import tsx bin/www.ts",
-  "dev": "npx tsx watch bin/www.ts",
-  "prd": "pm2 start bin/www.ts",
-  "test": "echo \"Error: no test specified\" && exit 1"
-},
+  "scripts": {
+    "start": "node --import tsx bin/www.ts",
+    "dev": "npx tsx watch bin/www.ts",
+    "prd": "pm2 start bin/www.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "dependencies": {
     "debug": "^4.1.1",
+    "dotenv": "^17.4.2",
     "knex": "^3.2.10",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
