@@ -9,8 +9,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
     "debug": "^4.1.1",
     "dotenv": "^17.4.2",
+    "jsonwebtoken": "^9.0.3",
     "knex": "^3.2.10",
     "koa": "^2.7.0",
     "koa-bodyparser": "^4.2.1",
