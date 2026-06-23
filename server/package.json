@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
 "scripts": {
-  "start": "npx tsx bin/www.ts",
+"start": "node --import tsx bin/www.ts",
   "dev": "npx tsx watch bin/www.ts",
   "prd": "pm2 start bin/www.ts",
   "test": "echo \"Error: no test specified\" && exit 1"
