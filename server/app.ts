@@ -12,9 +12,10 @@ import users from './routes/users';
 import posts from './routes/post';
 import records from './routes/records';
 import auth from './routes/auth';
-
+import cors from 'koa2-cors'
 const app = new Koa();
 
+app.use(cors())
 // error handler
 onerror(app);
 

@@ -23,6 +23,7 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.2.0",
+    "koa2-cors": "^2.0.6",
     "mysql2": "^3.22.5",
     "pug": "^2.0.3"
   },
@@ -36,6 +37,7 @@
     "@types/koa-router": "^7.4.0",
     "@types/koa-static": "^4.0.1",
     "@types/koa-views": "^2.0.4",
+    "@types/koa2-cors": "^2.0.6",
     "@types/node": "^20.11.0",
     "nodemon": "^1.19.1",
     "tsx": "^4.7.1",
