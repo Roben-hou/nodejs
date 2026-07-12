@@ -9,8 +9,8 @@ const router = new Router();
 router.prefix('/records');
 
 router.get('/', authMiddleware, RecordController.getList)
-router.post('/create', authMiddleware,RecordController.create)
-router.get('/stats',authMiddleware, RecordController.getStats)
-router.delete('/:id', RecordController.delete)
-
+router.post('/create', authMiddleware, RecordController.create)
+router.get('/stats', authMiddleware, RecordController.getStats)
+router.delete('/:id', authMiddleware, RecordController.delete)
+router.put('/:id', authMiddleware, RecordController.update)
 export default router;

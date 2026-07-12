@@ -11,12 +11,13 @@ export const RecordController = {
     create: async (ctx: RouterContext, next: Next) => {
         const { title, amount, type, category } = ctx.request.body as { title: string, amount: number, type: 'income' | 'expense', category: string }
         const userId = ctx.state.user.id
-        const records = await db('records').insert({ title, amount, type, category, user_id: userId })
+        await db('records').insert({ title, amount, type, category, user_id: userId })
         ctx.body = { message: '插入成功' }
     },
     delete: async (ctx: RouterContext, next: Next) => {
         const id = ctx.params.id
-        const records = await db('records').where('id', id).delete()
+        const userId = ctx.state.user.id
+        await db('records').where({ id, user_id: userId }).delete()
         ctx.body = { message: '删除成功' }
     },
     getStats: async (ctx: RouterContext, next: Next) => {
@@ -27,5 +28,12 @@ export const RecordController = {
             income: income?.total || 0,
             expense: expense?.total || 0
         }
+    },
+    update: async (ctx: RouterContext, next: Next) => {
+        const id = ctx.params.id
+        const userId = ctx.state.user.id
+        const { title, amount, type, category } = ctx.request.body as { title: string, amount: number, type: 'income' | 'expense', category: string }
+        await db('records').where({ id, user_id: userId }).update({ title, amount, type, category })
+        ctx.body = { message: '更新成功' } 
     }
 }
