@@ -14,7 +14,7 @@ export const AuthController = {
         return
     }
     const hashedPassword = await bcrypt.hash(password, 10)
-    await db('users').insert({ username, password: hashedPassword })
+        await db('users').insert({ username, password: hashedPassword })
         ctx.body = { message: '注册成功' }
     },
     login: async (ctx: RouterContext) => {

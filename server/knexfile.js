@@ -1,5 +1,4 @@
-const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+require('dotenv').config()
 
 module.exports = {
   development: {
@@ -11,8 +10,17 @@ module.exports = {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE
     },
-    migrations: {
-      directory: path.join(__dirname, 'migrations')
-    }
+    migrations: { directory: './migrations' }
+  },
+  production: {
+    client: 'mysql2',
+    connection: {
+      host: 'reseau.proxy.rlwy.net',
+      port: 59400,
+      user: 'root',
+      password: 'ddBhScKFfoWYZObUTBTcKmDaovYPWSxS',
+      database: 'railway'
+    },
+    migrations: { directory: './migrations' }
   }
 };

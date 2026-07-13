@@ -11,6 +11,7 @@ import index from './routes/index';
 import users from './routes/users';
 import posts from './routes/post';
 import records from './routes/records';
+import family from './routes/family';
 import auth from './routes/auth';
 import cors from 'koa2-cors'
 const app = new Koa();
@@ -57,6 +58,8 @@ app.use(posts.routes());
 app.use(posts.allowedMethods());
 app.use(records.routes());
 app.use(records.allowedMethods());
+app.use(family.routes());
+app.use(family.allowedMethods());
 app.use(auth.routes());
 app.use(auth.allowedMethods());
 
