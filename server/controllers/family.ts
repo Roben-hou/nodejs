@@ -128,5 +128,39 @@ requestJoin: async (ctx: RouterContext, next: Next) => {
       ctx.body = { message: '你没有被邀请' }
     }
   },
+rejectRequest: async (ctx: RouterContext, next: Next) => {
+  const userId = ctx.state.user.id
+  const id = ctx.params.id
+
+  // 第一步：先查出这条记录本身（不管是 apply 还是 invite）
+  const invitation = await db('family_invitations').where({ id, status: 'pending' }).first()
+  if (!invitation) {
+    ctx.status = 400
+    ctx.body = { message: '记录不存在或已处理' }
+    return
+  }
+
+  // 第二步：根据 type 分别判断权限
+  if (invitation.type === 'apply') {
+    const isFamilyOwner = await db('family_members')
+    .where({ family_id: invitation.family_id, user_id: userId, role: 'owner' })
+    .first()
+    if(!isFamilyOwner){
+      ctx.status = 400
+      ctx.body = { message: '你没有该家庭的申请' }
+      return
+    }
+  }
+  else {
+    if(invitation.user_id !== userId){
+      ctx.status = 400
+      ctx.body = { message: '你没有被邀请' }
+      return
+    }
+  }
+    // 第三步：权限通过后，统一执行拒绝操作
+    await db('family_invitations').where({ id }).update({ status: 'rejected' })
+    ctx.body = { message: '已拒绝' }
+  }
 
 }
