@@ -6,5 +6,6 @@ const router = new Router();
 router.prefix('/family');
 router.get('/my', authMiddleware, FamilyController.getMyFamilies);
 router.post('/create', authMiddleware, FamilyController.create);
-
+router.get('/invitations', authMiddleware, FamilyController.getMyInvitations);
+router.post('/apply', authMiddleware, FamilyController.apply);
 export default router;

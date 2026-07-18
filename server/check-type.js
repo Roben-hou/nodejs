@@ -1,9 +1,11 @@
 require('dotenv').config()
-const knexfile = require('./knexfile')
-const knex = require('knex')(knexfile.production)
+const knex = require('knex')(require('./knexfile').development)
 
-knex.raw("SHOW COLUMNS FROM users WHERE Field = 'id'")
-  .then(result => {
-    console.log(result[0])
-    return knex.destroy()
-  })
+async function check() {
+  const familiesId = await knex.raw("SHOW COLUMNS FROM families WHERE Field = 'id'")
+  console.log('families.id:', familiesId[0])
+  const usersId = await knex.raw("SHOW COLUMNS FROM users WHERE Field = 'id'")
+console.log('users.id:', usersId[0])
+  await knex.destroy()
+}
+check()
