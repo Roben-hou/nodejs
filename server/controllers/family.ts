@@ -69,6 +69,56 @@ export const FamilyController = {
     
     ctx.body = { message: '申请成功',id:invitationId}
   },
+  invite: async (ctx: RouterContext, next: Next) => {
+    const userId = ctx.state.user.id
+    const { username } = ctx.request.body as {username: string}
+    const familyId=ctx.params.id
+    const targetUser = await db('users').where({ username }).first()
+    if (!targetUser) {
+      ctx.status = 400
+      ctx.body = { message: '用户不存在' }
+      return
+    }
+    const targetUserId = targetUser.id as number
+    //第一步：检查操作权限
+    const isOwner = await db('family_members')
+      .where({ family_id: familyId, user_id: userId, role: 'owner' })
+      .first()
+
+    if (!isOwner) {
+      ctx.status = 400
+      ctx.body = { message: '你没有该家庭的邀请权限' }
+      return
+    }
+    //第二步：检查是否已是成员
+    const existingMember = await db('family_members')
+    .where({ family_id: familyId, user_id: targetUserId })
+    .first()
+    if (existingMember) {
+      ctx.status = 400
+      ctx.body = { message: '已经是该家庭的成员' }
+      return
+    }
+    //第三步：检查是否已存在 pending 邀请
+    const existingInvitation = await db('family_invitations')
+      .where({ family_id: familyId, user_id: targetUserId, status: 'pending' })
+      .first()
+      if (existingInvitation) {
+      ctx.status = 400
+      ctx.body = { message: '已有待处理的邀请' }
+      return
+    }
+
+    //第四步，执行插入
+    const [invitationId] = await db('family_invitations').insert({
+      family_id: familyId,
+      user_id: targetUserId,
+      status: 'pending',
+      type: 'invite'
+    })
+
+    ctx.body = { message: '邀请成功', id: invitationId }
+  },
 requestJoin: async (ctx: RouterContext, next: Next) => {
   const userId = ctx.state.user.id
   const id = ctx.params.id
@@ -103,29 +153,34 @@ requestJoin: async (ctx: RouterContext, next: Next) => {
       ctx.body = { message: '你没有该家庭的申请' }
     }
    }
-},
-  invite: async (ctx: RouterContext, next: Next) => {
+  },
+  acceptInvite: async (ctx: RouterContext, next: Next) => {
     const userId = ctx.state.user.id
     const id = ctx.params.id
-    const isAcceptor =await db('family_invitations')
-    .where({ id, user_id: userId,status: 'pending',type: 'apply'})
-    .first()
-    if (isAcceptor) {
-      const familyId = isAcceptor.family_id
-      await db.transaction(async (trx) => {
-        await trx('family_invitations')
-          .where({ id,status: 'pending',type: 'invite' })
-          .update({ status: 'accepted' })
-        await trx('family_members').insert({
-          family_id: familyId,
-          user_id: userId,
-          role: 'member'
-        })
-      })
-      ctx.body = { message: '加入成功' }
-    } else {
+    // 第一步：先查出这条 invitation 记录本身
+    const invitation = await db('family_invitations').where({ id, status: 'pending', type: 'invite' }).first()
+    if (!invitation) {
       ctx.status = 400
-      ctx.body = { message: '你没有被邀请' }
+      ctx.body = { message: '邀请不存在或已处理' }
+      return
+    }
+    else{
+      if (invitation.user_id === userId) {
+        await db.transaction(async (trx) => {
+          await trx('family_invitations')
+            .where({ id,status: 'pending',type: 'invite' })
+            .update({ status: 'accepted' })
+          await trx('family_members').insert({
+            family_id: invitation.family_id,
+            user_id: invitation.user_id,
+            role: 'member'
+          })
+        })
+        ctx.body = { message: '加入成功' }
+      } else {
+        ctx.status = 400
+        ctx.body = { message: '你没有该家庭的邀请' }
+      }
     }
   },
 rejectRequest: async (ctx: RouterContext, next: Next) => {
