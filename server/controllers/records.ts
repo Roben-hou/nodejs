@@ -32,6 +32,19 @@ export const RecordController = {
     create: async (ctx: RouterContext, next: Next) => {
         const { title, amount, type, category, family_id } = ctx.request.body as { title: string, amount: number, type: 'income' | 'expense', category: string, family_id?: number }
         const userId = ctx.state.user.id
+        if (family_id !== undefined) {
+            const isMember = await db("family_members")
+            .where({
+                family_id,
+                user_id: userId,
+            })
+            .first();
+            if (!isMember) {
+                ctx.status = 403;
+                ctx.body = { message: "你不是该家庭的成员" };
+                return;
+            }
+        }
         await db('records').insert({ title, amount, type, category, user_id: userId, family_id })
         ctx.body = { message: '插入成功' }
     },
