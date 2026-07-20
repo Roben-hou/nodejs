@@ -31,8 +31,19 @@ export const FamilyController = {
     const invitations = await db('family_invitations')
       .join('users', 'family_invitations.user_id', 'users.id')
       .join('families', 'family_invitations.family_id', 'families.id')
-      .where('family_invitations.user_id', userId)
-      .orWhereIn('family_invitations.family_id', ownedFamilyIds)
+     .where((query) => {
+  query
+    .where((inviteQuery) => {
+      inviteQuery
+        .where("family_invitations.type","invite" )
+        .andWhere("family_invitations.user_id", userId);
+    })
+    .orWhere((applyQuery) => {
+      applyQuery
+        .where("family_invitations.type","apply" )
+        .whereIn("family_invitations.family_id", ownedFamilyIds);
+    });
+})
       .select('family_invitations.*', 'users.username', 'families.name as family_name')
     ctx.body = invitations
   },
