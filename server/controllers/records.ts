@@ -45,7 +45,7 @@ export const RecordController = {
                 return;
             }
         }
-        await db('records').insert({ title, amount, type, category, user_id: userId, family_id })
+        await db('records').insert({ title, amount, type, category, user_id: userId, family_id:family_id ?? null })
         ctx.body = { message: '插入成功' }
     },
     delete: async (ctx: RouterContext, next: Next) => {
